@@ -1,0 +1,23 @@
+name: "GitHub Actions Weather Bot"
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "*/10 * * * *"
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "检出仓库代码"
+        uses: actions/checkout@v3 # https://github.com/actions/checkout
+      - uses: fregante/setup-git-user@v1
+      - name: "通过wttr.in获取天气"
+        run: bash ./sh/weather.sh
+      - name: Commit & Push
+        run: |
+          git add -A .
+          git commit -m "generated weather png"
+          git push
